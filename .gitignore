@@ -1,0 +1,74 @@
+# Dependencias, secretos y datos del usuario: nunca se versionan
+node_modules/
+.env
+.env.*
+!.env.example
+!.env.*.example
+.cache/
+data/
+*.log
+
+# Configuración local de asistentes
+.claude/
+.agents/
+.codex/
+.local/
+
+# Respaldos e historial privado
+backups/
+.backups/
+*.bundle
+*.bak
+
+# Documentación de trabajo, producto y negocio: solo local.
+# Todo documento nuevo queda fuera de Git salvo que se autorice por ruta
+# con una línea "!" en la sección siguiente.
+docs/*
+doc/
+documentation/
+specs/
+notes/
+plans/
+decisions/
+adr/
+adrs/
+product-docs/
+CLAUDE.md
+AGENTS.md
+HANDOFF.md
+MEMORY.md
+TODO
+TODO.*
+README
+README.*
+LICENSE.*
+CHANGELOG
+CHANGELOG.*
+CONTRIBUTING*
+*.md
+*.mdx
+*.rst
+*.adoc
+*.txt
+*.text
+*.pdf
+*.doc
+*.docx
+*.odt
+*.rtf
+*.ppt
+*.pptx
+*.odp
+*.xls
+*.xlsx
+*.ods
+*.csv
+*.tsv
+
+# Documentos públicos autorizados explícitamente, uno por uno
+!README.md
+!README.es.md
+!SECURITY.md
+!LICENSE
+!docs/arquitectura.md
+!docs/despliegue.md

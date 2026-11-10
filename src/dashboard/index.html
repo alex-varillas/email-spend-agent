@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Control de gastos | Panel personal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f53003'/%3E%3Cpath d='M8 22V16M16 22V10M24 22V6' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/dashboard/style.css">
+  <script defer src="/dashboard/gsap.min.js"></script>
+  <script type="module" src="/dashboard/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#overview">Ir al resumen</a>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/dashboard" aria-label="Control de gastos, inicio">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.3"/><path d="M16 4v5m12 7h-5m-7 12v-5M4 16h5" stroke="currentColor" stroke-width="1.3"/><circle cx="16" cy="16" r="4.5" stroke="currentColor" stroke-width="1.3"/><circle cx="16" cy="16" r="1.3" fill="currentColor"/></svg>
+        <span>Control de gastos<span class="brand-dot">.</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Secciones del dashboard">
+        <a href="#overview">Resumen</a>
+        <a href="#analysis">Análisis</a>
+        <a href="#transactions">Movimientos</a>
+      </nav>
+      <div class="topbar-actions">
+        <button type="button" id="btn-theme" class="btn btn-icon" aria-label="Cambiar tema" title="Cambiar tema">
+          <svg class="theme-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <svg class="theme-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" id="btn-refresh" class="btn btn-icon btn-refresh" aria-label="Recargar gastos guardados" title="Recargar gastos guardados"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 5v5h-5M19.1 10A7.5 7.5 0 1 0 20 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </header>
+
+    <section class="overview section-frame" id="overview" aria-labelledby="page-title">
+      <div class="overview-copy">
+        <p class="eyebrow">[ TU PANEL PERSONAL ]</p>
+        <h1 id="page-title">Tus gastos,<br>con claridad<span>.</span></h1>
+        <p class="overview-description">Cada movimiento, cada suscripción.<br>Todo en un mismo lugar.</p>
+      </div>
+      <div class="overview-detail">
+        <div class="overview-art" aria-hidden="true">
+          <svg viewBox="0 0 340 132" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path class="art-guide" d="M22 32h296M22 108h296M65 18v104M170 10v112M276 18v104"/>
+            <path class="art-line agent-route" d="M87 83h24a12 12 0 0 0 12-12v-5h15"/>
+            <path class="art-line agent-route" d="M202 66h18a12 12 0 0 0 12-12v-5h28"/>
+            <g class="agent-mail">
+              <rect class="art-block" x="43" y="68" width="44" height="30" rx="4"/>
+              <path class="art-line" d="m44 71 21 15 21-15m-42 24 13-14m16 0 13 14"/>
+            </g>
+            <g class="agent-head">
+              <rect class="art-block" x="138" y="38" width="64" height="56" rx="16"/>
+              <rect class="art-line" x="148" y="51" width="44" height="25" rx="8"/>
+              <path class="art-line agent-eyes" d="M159 61v5m22-5v5"/>
+              <path class="art-line" d="M164 84h12m-6-46V25m-38 32v17m76-17v17"/>
+              <circle class="art-node" cx="170" cy="21" r="4"/>
+            </g>
+            <g class="agent-receipt">
+              <path class="art-block" d="M260 26h32v46l-4-3-4 3-4-3-4 3-4-3-4 3-4-3-4 3Z"/>
+              <path class="art-line" d="M268 36h16m-16 8h10m-10 14 4 4 11-11"/>
+            </g>
+            <circle class="art-node" cx="111" cy="83" r="3"/>
+            <circle class="art-node" cx="232" cy="49" r="3"/>
+          </svg>
+        </div>
+        <p class="eyebrow">ACTIVIDAD DE TUS DATOS</p>
+        <span id="freshness" class="chip" hidden></span>
+        <p class="overview-hint">Explora tus gastos por período, categoría o comercio.</p>
+      </div>
+    </section>
+
+    <form class="filters" id="filters" aria-label="Filtros" autocomplete="off">
+      <div class="field">
+        <label for="f-range">Período</label>
+        <select id="f-range"></select>
+      </div>
+      <div class="field range-pair" id="custom-range" hidden>
+        <div class="field">
+          <label for="f-from">Desde</label>
+          <input type="date" id="f-from">
+        </div>
+        <div class="field">
+          <label for="f-to">Hasta</label>
+          <input type="date" id="f-to">
+        </div>
+      </div>
+      <div class="field">
+        <span class="label" id="lbl-currency">Moneda</span>
+        <div class="segmented" id="f-currency" role="group" aria-labelledby="lbl-currency"></div>
+      </div>
+      <div class="field">
+        <label for="f-categoria">Categoría</label>
+        <select id="f-categoria"></select>
+      </div>
+      <div class="field">
+        <label for="f-canal">Canal</label>
+        <select id="f-canal"></select>
+      </div>
+      <div class="field">
+        <label for="f-banco">Banco</label>
+        <select id="f-banco"></select>
+      </div>
+      <div class="field grow">
+        <label for="f-query">Comercio</label>
+        <input type="search" id="f-query" placeholder="Buscar comercio">
+      </div>
+      <div class="filter-options">
+        <label class="check"><input type="checkbox" id="f-transfers"> Ocultar transferencias personales</label>
+        <button type="button" id="btn-clear" class="btn btn-ghost" hidden>Limpiar filtros</button>
+      </div>
+    </form>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <main id="content" hidden>
+      <section class="kpis section-frame" id="kpis" aria-label="Resumen"></section>
+
+      <section class="card section-frame" id="analysis" aria-labelledby="h-monthly">
+        <header class="card-head">
+          <div>
+            <p class="eyebrow section-label">01 / EVOLUCIÓN</p>
+            <h2 id="h-monthly">Gasto por mes</h2>
+            <p class="card-sub" id="monthly-sub"></p>
+          </div>
+          <div class="card-controls">
+            <div class="segmented" id="seg-by" role="group" aria-label="Segmentar por"></div>
+            <div class="segmented" id="view-monthly" role="group" aria-label="Vista"></div>
+          </div>
+        </header>
+        <div class="legend" id="monthly-legend"></div>
+        <div class="chart-box" id="monthly-chart"></div>
+      </section>
+
+      <div class="grid-2 section-frame">
+        <section class="card" aria-labelledby="h-breakdown">
+          <header class="card-head">
+            <div>
+              <p class="eyebrow section-label">02 / DISTRIBUCIÓN</p>
+              <h2 id="h-breakdown">Dónde se va el dinero</h2>
+              <p class="card-sub" id="breakdown-sub"></p>
+            </div>
+            <div class="card-controls">
+              <div class="segmented" id="seg-dim" role="group" aria-label="Agrupar por"></div>
+              <div class="segmented" id="view-breakdown" role="group" aria-label="Vista"></div>
+            </div>
+          </header>
+          <div id="breakdown-body"></div>
+          <p class="card-foot" id="breakdown-foot"></p>
+        </section>
+
+        <section class="card" aria-labelledby="h-subs">
+          <header class="card-head">
+            <div>
+              <p class="eyebrow section-label">03 / RECURRENTES</p>
+              <h2 id="h-subs">Suscripciones activas</h2>
+              <p class="card-sub">Hoy, sin importar el período elegido</p>
+            </div>
+          </header>
+          <div id="subs-body"></div>
+          <p class="card-foot" id="subs-foot"></p>
+        </section>
+      </div>
+
+      <section class="card section-frame" id="transactions" aria-labelledby="h-table">
+        <header class="card-head">
+          <div>
+            <p class="eyebrow section-label">04 / HISTORIAL</p>
+            <h2 id="h-table">Movimientos</h2>
+            <p class="card-sub" id="table-sub"></p>
+          </div>
+          <div class="card-controls">
+            <button type="button" id="btn-csv" class="btn">Exportar CSV <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v10m-4-4 4 4 4-4M4 14v3h12v-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </header>
+        <div id="table-body"></div>
+        <div class="more" id="table-more" hidden></div>
+      </section>
+    </main>
+    <footer class="page-footer"><span>Control de gastos<span class="brand-dot">.</span></span><span>Tu dinero, en perspectiva.</span><a href="#overview">Volver arriba <span aria-hidden="true">↑</span></a></footer>
+  </div>
+
+  <dialog id="movement-dialog" class="movement-dialog" aria-labelledby="movement-vendor">
+    <div class="movement-panel">
+      <div class="movement-topline">
+        <p class="eyebrow">[ DETALLE DEL MOVIMIENTO ]</p>
+        <button type="button" id="movement-close" class="btn btn-icon" aria-label="Cerrar detalle" title="Cerrar detalle">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <h2 id="movement-vendor" class="movement-vendor"></h2>
+      <div id="movement-body"></div>
+    </div>
+  </dialog>
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+</body>
+</html>

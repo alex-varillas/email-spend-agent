@@ -1,0 +1,48 @@
+{
+  "name": "email-spend-agent",
+  "version": "0.1.0",
+  "description": "Personal agent that tracks expenses and recurring subscriptions from your Gmail, alerts you on Telegram and shows them in a private dashboard.",
+  "main": "scripts/run-bot.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node scripts/run-bot.js",
+    "authorize-gmail": "node scripts/authorize-gmail.js",
+    "preview": "node scripts/preview-extraction.js",
+    "ingest": "node scripts/ingest.js",
+    "bot": "node scripts/run-bot.js",
+    "dashboard": "node scripts/run-dashboard.js",
+    "poll": "node scripts/poll-users.js",
+    "backfill-banco": "node scripts/backfill-banco.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "gmail",
+    "expenses",
+    "subscriptions",
+    "telegram-bot",
+    "llm",
+    "personal-finance"
+  ],
+  "author": "Alex Varillas",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-varillas/email-spend-agent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alex-varillas/email-spend-agent/issues"
+  },
+  "homepage": "https://github.com/alex-varillas/email-spend-agent#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
+    "googleapis": "^174.0.1",
+    "groq-sdk": "^1.5.0",
+    "gsap": "3.15.0",
+    "openai": "^7.4.0",
+    "pdfkit": "^0.19.1"
+  }
+}
